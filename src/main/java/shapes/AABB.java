@@ -18,7 +18,7 @@ public class AABB {
     /**
      * Uses the Separating Axis Theorem (SAT) on the two axes (x, y).
      *
-     * @param other is the other AABB shape to test this AABB instance against
+     * @param other The other AABB shape to test this AABB instance against
      * @return true if the two AABB boxes overlap
      */
     public boolean overlaps(AABB other) {

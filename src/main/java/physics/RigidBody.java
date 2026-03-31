@@ -33,9 +33,9 @@ public class RigidBody {
      * Default values are set.
      * Throws an exception if any of the arguments are below 1.
      *
-     * @param mass - Stored as 1/mass to avoid repeated division during
+     * @param mass Stored as 1/mass to avoid repeated division during
      * integration. A value of 0 represents infinite mass (immovable body).
-     * @param inertia - The rotational equivalent of inverse mass. Resistance to rotational changes.
+     * @param inertia The rotational equivalent of inverse mass. Resistance to rotational changes.
      */
     public RigidBody(double mass, double inertia) {
         if (mass <= 0 || inertia <= 0) {
@@ -140,7 +140,7 @@ public class RigidBody {
      * the bodies data based on them.
      * Resets the force and torque at the end.
      *
-     * @param dt - delta time
+     * @param dt Delta time
      */
     public void integrate(double dt) {
         Vector2D acceleration = getForce().multiply(inverseMass);

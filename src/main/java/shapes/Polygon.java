@@ -22,7 +22,7 @@ public class Polygon implements Shape{
      * To be used for OBB collision checks.
      * Rotates all the edges by 90 degrees to get their Normals.
      *
-     * @return - list of all edge normals
+     * @return List of all edge normals
      */
     @Override
     public Vector2D[] getAxes() {
@@ -42,8 +42,8 @@ public class Polygon implements Shape{
      * on a 1D plane.
      * To be used for OBB collision check.
      *
-     * @param axis - axis on which the min and max points are projected
-     * @return - record class holding min and max value of the projection
+     * @param axis Axis on which the min and max points are projected
+     * @return Record class holding min and max value of the projection
      */
     @Override
     public Projection project(Vector2D axis) {
@@ -72,7 +72,7 @@ public class Polygon implements Shape{
      * From a list of vertices calculates all edges
      * and displays them as vectors2D.
      *
-     * @return - list of all edges
+     * @return List of all edges
      */
     private List<Vector2D> getEdges() {
         List<Vector2D> edges = new ArrayList<>();

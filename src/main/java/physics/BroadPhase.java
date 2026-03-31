@@ -17,9 +17,9 @@ public class BroadPhase {
      * Calls either cumputeCircle() or computePolygon
      * based on the shape.
      *
-     * @param body - Rigid body on which the AABB shape is computed
-     * @param shape - Needed to know which method to call
-     * @return - the AABB wrapped shape
+     * @param body Rigid body on which the AABB shape is computed
+     * @param shape Needed to know which method to call
+     * @return The AABB wrapped shape
      */
     public static AABB computeAABB(RigidBody body, Shape shape) {
         if (shape.getType() == ShapeType.CIRCLE) {
@@ -33,9 +33,9 @@ public class BroadPhase {
      * Calculates the AABB shape needed to wrap the circle tightly.
      * Uses the world position of the body in the calculation.
      *
-     * @param body - Rigid body on which the AABB shape is computed
-     * @param circle - The shape used to get the radius
-     * @return - tight AABB shape
+     * @param body Rigid body on which the AABB shape is computed
+     * @param circle The shape used to get the radius
+     * @return Tight AABB shape
      */
     private static AABB computeCircle(RigidBody body, Circle circle) {
         Vector2D position = body.getWorldPosition();
@@ -52,9 +52,9 @@ public class BroadPhase {
      * Calculates the AABB shape needed to wrap the polygon tightly.
      * Uses the world position of the body in the calculation.
      *
-     * @param body - Rigid body on which the AABB shape is computed
-     * @param polygon - used to get all vertices
-     * @return - tight AABB shape
+     * @param body Rigid body on which the AABB shape is computed
+     * @param polygon Used to get all vertices
+     * @return Tight AABB shape
      */
     private static AABB computePolygon(RigidBody body, Polygon polygon) {
         double minX = Double.MAX_VALUE;
@@ -97,8 +97,8 @@ public class BroadPhase {
      * This method may contain false positives, but never
      * false negatives.
      *
-     * @param objects - all physics objects, each one having a rigid body and a shape
-     * @return - List of pairs(2) of rigid bodies that MAY be colliding
+     * @param objects All physics objects, each one having a rigid body and a shape
+     * @return List of pairs(2) of rigid bodies that MAY be colliding
      */
     public static List<PhysicsObject[]> getPotentialCollisions(List<PhysicsObject> objects) {
         List<PhysicsObject[]> collidedPairs = new ArrayList<>();

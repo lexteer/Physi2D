@@ -2,7 +2,7 @@ package math;
 
 /**
  * A MUTABLE 2D Vector class that can be used for holding data about
- * vectors and points in 2d space. There are also methods for manipulating with
+ * vectors and points in 2d space. There are also methods for manipulating
  * the data.
  * Many methods like add and subtract directly change the data, so be carefull!
  */
@@ -70,8 +70,8 @@ public class Vector2D {
     }
 
     /**
-     * @param rad - Radians, not degrees
-     * @return - the mutated instance
+     * @param rad Radians, not degrees
+     * @return the mutated instance
      */
     public Vector2D rotate(double rad) {
         double xCos = x * Math.cos(rad);

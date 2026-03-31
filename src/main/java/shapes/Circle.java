@@ -23,8 +23,8 @@ public class Circle implements Shape{
      * on a 1D plane.
      * To be used for OBB collision check.
      *
-     * @param axis - axis on which the min and max points are projected
-     * @return - record class holding min and max value of the projection
+     * @param axis Axis on which the min and max points are projected
+     * @return Record class holding min and max value of the projection
      */
     @Override
     public Projection project(Vector2D axis) {
