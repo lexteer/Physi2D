@@ -7,7 +7,10 @@ import java.util.List;
 
 /**
  * Polygon shape that can be used to create many different shapes
- * using vertices. To be used for narrow phase collision search.
+ * using vertices.
+ * Has origin at 0,0 so when creating an instance of this class
+ * make sure you are creating is centered at 0,0.
+ * To be used for narrow phase collision search.
  */
 public class Polygon implements Shape{
     private final Vector2D[] vertices;

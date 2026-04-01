@@ -33,11 +33,13 @@ public class RigidBody {
      * Default values are set.
      * Throws an exception if any of the arguments are below 1.
      *
+     * @param x The x coordinate of the body in the world
+     * @param y The y coordinate of the body in the world
      * @param mass Stored as 1/mass to avoid repeated division during
      * integration. A value of 0 represents infinite mass (immovable body).
      * @param inertia The rotational equivalent of inverse mass. Resistance to rotational changes.
      */
-    public RigidBody(double mass, double inertia) {
+    public RigidBody(double x, double y, double mass, double inertia) {
         if (mass <= 0 || inertia <= 0) {
             throw new IllegalArgumentException("[RigidBody] The values must be greater than 0!");
         }
@@ -48,7 +50,7 @@ public class RigidBody {
         oldInverseMass = inverseMass;
         oldInverseInertia = inverseInertia;
 
-        worldPosition = new Vector2D();
+        worldPosition = new Vector2D(x, y);
         velocity = new Vector2D();
         force = new Vector2D();
 
@@ -95,6 +97,10 @@ public class RigidBody {
 
     public void applyTorque(double torque) {
         this.torque += torque;
+    }
+
+    public void rotate(double rad) {
+        angle += rad;
     }
 
     /**
