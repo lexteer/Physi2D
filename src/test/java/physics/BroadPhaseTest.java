@@ -1,6 +1,7 @@
 package physics;
 
-import math.Vector2D;
+import
+        math.Vector2D;
 import org.junit.jupiter.api.Test;
 import shapes.AABB;
 import shapes.Circle;
@@ -72,7 +73,7 @@ public class BroadPhaseTest {
     }
 
     @Test
-    void aabbOverlappingTest() {
+    void aabbOverlappingPolygonTest() {
         // object 1
         RigidBody body1 = new RigidBody(3, 3, 10, 10);
         Vector2D[] vertices1 = {
@@ -106,7 +107,7 @@ public class BroadPhaseTest {
     }
 
     @Test
-    void aabbNotOverlappingTest() {
+    void aabbNotOverlappingPolygonTest() {
         // object 1
         RigidBody body1 = new RigidBody(3, 3, 10, 10);
         Vector2D[] vertices1 = {
@@ -137,5 +138,33 @@ public class BroadPhaseTest {
         List<PhysicsObject[]> listOfAabbCollisions = BroadPhase.getPotentialCollisions(allObjects);
 
         assertEquals(0, listOfAabbCollisions.size(), 0);
+    }
+
+    @Test
+    void aabbOverlappingTest() {
+        // object 1
+        RigidBody body1 = new RigidBody(3, 3, 10, 10);
+        Circle shape1 = new Circle(2);
+        PhysicsObject object1 = new PhysicsObject(body1, shape1);
+
+        // object 2 overlaps object 1
+        RigidBody body2 = new RigidBody(5, 5, 10, 10);
+        Vector2D[] vertices2 = {
+                new Vector2D(-1, -1),
+                new Vector2D(1, -1),
+                new Vector2D(1, 1),
+                new Vector2D(-1, 1)
+        };
+        Polygon shape2 = new Polygon(vertices2);
+        PhysicsObject object2 = new PhysicsObject(body2, shape2);
+
+        List<PhysicsObject> allObjects = new ArrayList<>();
+        allObjects.add(object1);
+        allObjects.add(object2);
+
+        // check collisions
+        List<PhysicsObject[]> listOfAabbCollisions = BroadPhase.getPotentialCollisions(allObjects);
+
+        assertEquals(1, listOfAabbCollisions.size(), 0);
     }
 }
