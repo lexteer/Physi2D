@@ -1,13 +1,13 @@
 package physics;
 
-import com.github.lexteer.math.Vector2D;
-import com.github.lexteer.physics.CollisionManifold;
-import com.github.lexteer.physics.NarrowPhase;
-import com.github.lexteer.physics.PhysicsObject;
-import com.github.lexteer.physics.RigidBody;
+import com.github.physi2d.math.Vector2D;
+import com.github.physi2d.physics.CollisionManifold;
+import com.github.physi2d.physics.NarrowPhase;
+import com.github.physi2d.physics.PhysicsObject;
+import com.github.physi2d.physics.RigidBody;
 import org.junit.jupiter.api.Test;
-import com.github.lexteer.shapes.Circle;
-import com.github.lexteer.shapes.Polygon;
+import com.github.physi2d.shapes.Circle;
+import com.github.physi2d.shapes.Polygon;
 
 import static org.junit.jupiter.api.Assertions.*;
 

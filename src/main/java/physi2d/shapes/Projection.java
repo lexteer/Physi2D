@@ -1,4 +1,4 @@
-package com.github.lexteer.shapes;
+package physi2d.shapes;
 
 /**
  * To be used to track min and max values of a projection

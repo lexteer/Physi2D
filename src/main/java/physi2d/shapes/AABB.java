@@ -1,4 +1,4 @@
-package com.github.lexteer.shapes;
+package physi2d.shapes;
 
 /**
  * Represents an AABB (axis-aligned bounding box) shape used for broad phase

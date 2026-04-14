@@ -1,6 +1,6 @@
-package com.github.lexteer.shapes;
+package physi2d.shapes;
 
-import com.github.lexteer.math.Vector2D;
+import physi2d.math.Vector2D;
 
 /**
  * Circle shape used in the OBB narrow collision search.

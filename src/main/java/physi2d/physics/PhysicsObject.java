@@ -1,6 +1,6 @@
-package com.github.lexteer.physics;
+package physi2d.physics;
 
-import com.github.lexteer.shapes.Shape;
+import physi2d.shapes.Shape;
 
 /**
  * Pure data class holding a rigid body and its shape

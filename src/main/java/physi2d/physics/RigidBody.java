@@ -1,6 +1,6 @@
-package com.github.lexteer.physics;
+package physi2d.physics;
 
-import com.github.lexteer.math.Vector2D;
+import physi2d.math.Vector2D;
 
 /**
  * Rigid body represents a single simulated 2D body.
@@ -61,6 +61,10 @@ public class RigidBody {
 
     public Vector2D getWorldPosition() {
         return worldPosition.copy();
+    }
+
+    public void setWorldPosition(Vector2D position) {
+        this.worldPosition = position;
     }
 
     public Vector2D getVelocity() {

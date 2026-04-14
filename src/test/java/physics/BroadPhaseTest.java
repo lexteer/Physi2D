@@ -1,12 +1,12 @@
 package physics;
 
-import com.github.lexteer.math.Vector2D;
-import com.github.lexteer.physics.BroadPhase;
-import com.github.lexteer.physics.RigidBody;
+import com.github.physi2d.math.Vector2D;
+import com.github.physi2d.physics.BroadPhase;
+import com.github.physi2d.physics.RigidBody;
 import org.junit.jupiter.api.Test;
-import com.github.lexteer.shapes.AABB;
-import com.github.lexteer.shapes.Circle;
-import com.github.lexteer.shapes.Polygon;
+import com.github.physi2d.shapes.AABB;
+import com.github.physi2d.shapes.Circle;
+import com.github.physi2d.shapes.Polygon;
 
 import java.util.ArrayList;
 import java.util.List;

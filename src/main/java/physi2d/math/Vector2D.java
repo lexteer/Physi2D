@@ -1,4 +1,4 @@
-package com.github.lexteer.math;
+package physi2d.math;
 
 /**
  * A MUTABLE 2D Vector class that can be used for holding data about
