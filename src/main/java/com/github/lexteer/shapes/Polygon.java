@@ -1,6 +1,6 @@
 package com.github.lexteer.shapes;
 
-import math.Vector2D;
+import com.github.lexteer.math.Vector2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

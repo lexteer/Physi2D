@@ -1,6 +1,6 @@
 package com.github.lexteer.physics;
 
-import math.Vector2D;
+import com.github.lexteer.math.Vector2D;
 
 /**
  * Rigid body represents a single simulated 2D body.

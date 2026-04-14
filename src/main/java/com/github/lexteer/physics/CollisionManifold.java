@@ -1,6 +1,6 @@
 package com.github.lexteer.physics;
 
-import math.Vector2D;
+import com.github.lexteer.math.Vector2D;
 
 /**
  * Data class that holds the result of a narrow phase collision check.

@@ -1,12 +1,12 @@
 package com.github.lexteer.physics;
 
-import math.Vector2D;
-import physics.CollisionManifold;
-import physics.PhysicsObject;
-import shapes.Circle;
-import shapes.Polygon;
-import shapes.Projection;
-import shapes.ShapeType;
+import com.github.lexteer.math.Vector2D;
+import com.github.lexteer.physics.CollisionManifold;
+import com.github.lexteer.physics.PhysicsObject;
+import com.github.lexteer.shapes.Circle;
+import com.github.lexteer.shapes.Polygon;
+import com.github.lexteer.shapes.Projection;
+import com.github.lexteer.shapes.ShapeType;
 
 import java.util.ArrayList;
 import java.util.Arrays;

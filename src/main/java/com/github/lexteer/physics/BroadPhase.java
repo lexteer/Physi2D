@@ -1,8 +1,8 @@
 package com.github.lexteer.physics;
 
-import math.Vector2D;
-import physics.PhysicsObject;
-import shapes.*;
+import com.github.lexteer.math.Vector2D;
+import com.github.lexteer.physics.PhysicsObject;
+import com.github.lexteer.shapes.*;
 
 import java.util.ArrayList;
 import java.util.List;
