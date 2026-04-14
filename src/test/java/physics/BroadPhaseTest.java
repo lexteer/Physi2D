@@ -1,12 +1,13 @@
 package physics;
 
-import com.github.physi2d.math.Vector2D;
-import com.github.physi2d.physics.BroadPhase;
-import com.github.physi2d.physics.RigidBody;
+import physi2d.math.Vector2D;
+import physi2d.physics.BroadPhase;
+import physi2d.physics.PhysicsObject;
+import physi2d.physics.RigidBody;
 import org.junit.jupiter.api.Test;
-import com.github.physi2d.shapes.AABB;
-import com.github.physi2d.shapes.Circle;
-import com.github.physi2d.shapes.Polygon;
+import physi2d.shapes.AABB;
+import physi2d.shapes.Circle;
+import physi2d.shapes.Polygon;
 
 import java.util.ArrayList;
 import java.util.List;
