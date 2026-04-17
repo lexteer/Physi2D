@@ -71,6 +71,10 @@ public class RigidBody {
         return velocity.copy();
     }
 
+    public void setVelocity(Vector2D newVelocity) {
+        velocity = newVelocity;
+    }
+
     public Vector2D getForce() {
         return force.copy();
     }

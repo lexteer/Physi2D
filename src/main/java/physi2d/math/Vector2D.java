@@ -84,5 +84,4 @@ public class Vector2D {
 
         return this;
     }
-
 }
