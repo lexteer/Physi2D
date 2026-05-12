@@ -27,6 +27,9 @@ public class RigidBody {
 
     private static boolean rotationLock = false;
 
+    private boolean overrideGravity = false;
+    private Vector2D overriddenGravity;
+
     /**
      * Transforms mass and inertia to their inverted counterparts
      * for optimization.
@@ -57,6 +60,8 @@ public class RigidBody {
         angle = 0;
         angularVelocity = 0;
         torque = 0;
+
+        overriddenGravity = new Vector2D();
     }
 
     public Vector2D getWorldPosition() {
@@ -109,6 +114,19 @@ public class RigidBody {
 
     public void rotate(double rad) {
         angle += rad;
+    }
+
+    public boolean hasGravityOverride() {
+        return overrideGravity;
+    }
+
+    public void setGravity(Vector2D gravity) {
+        overrideGravity = true;
+        overriddenGravity = gravity;
+    }
+
+    public Vector2D getOverriddenGravity() {
+        return overriddenGravity;
     }
 
     /**
