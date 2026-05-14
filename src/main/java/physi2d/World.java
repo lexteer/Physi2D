@@ -11,12 +11,16 @@ public class World {
     private Vector2D gravity;
 
     public World() {
-        gravity = new Vector2D(0, 9.8); // default
+        gravity = new Vector2D(0, -980); // default
         physicsObjectsList = new ArrayList<>();
     }
 
     public void addObject(PhysicsObject object) {
         physicsObjectsList.add(object);
+    }
+
+    public List<PhysicsObject> getObjects() {
+        return physicsObjectsList;
     }
 
     public void setGravity(Vector2D value) {
