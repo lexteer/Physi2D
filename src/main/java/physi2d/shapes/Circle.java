@@ -7,4 +7,7 @@ public class Circle implements Shape2d{
         this.radius = radius;
     }
 
+    public double getRadius() {
+        return radius;
+    }
 }

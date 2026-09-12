@@ -26,6 +26,11 @@ public class Body {
         this.y = y;
     }
 
+    public void setPosition(Vec2 position) {
+        this.x = position.x();
+        this.y = position.y();
+    }
+
     public Vec2 getVelocity() {
         return velocity;
     }
