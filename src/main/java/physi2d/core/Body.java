@@ -4,31 +4,24 @@ import physi2d.math.Vec2;
 import physi2d.shapes.Shape2d;
 
 public class Body {
-    private double x, y;
+    private Vec2 position;
     private double invMass;
     private Vec2 velocity = Vec2.ZERO;
     private Vec2 force = Vec2.ZERO;
     private Shape2d shape;
 
-    public Body(double x, double y, double mass, Shape2d shape) {
-        this.x = x;
-        this.y = y;
+    public Body(Vec2 position, double mass, Shape2d shape) {
+        this.position = position;
         this.invMass = (mass == 0) ? 0 : 1/mass;
         this.shape = shape;
     }
 
     public Vec2 getPosition() {
-        return new Vec2(x, y);
-    }
-
-    public void setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
+        return position;
     }
 
     public void setPosition(Vec2 position) {
-        this.x = position.x();
-        this.y = position.y();
+        this.position = position;
     }
 
     public Vec2 getVelocity() {
