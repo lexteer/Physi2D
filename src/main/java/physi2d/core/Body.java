@@ -8,6 +8,8 @@ public class Body {
     private double invMass;
     private double gravityScale = 1.0;
     private double restitution = 0.2; // 0.0 - 1.0
+    private double staticFriction = 0.5;
+    private double dynamicFriction = 0.3;
     private Vec2 velocity = Vec2.ZERO;
     private Vec2 force = Vec2.ZERO;
     private Shape2d shape;
@@ -52,6 +54,22 @@ public class Body {
 
     public void setRestitution(double restitution) {
         this.restitution = Math.clamp(restitution, 0.0, 1.0);
+    }
+
+    public double getStaticFriction() {
+        return staticFriction;
+    }
+
+    public void setStaticFriction(double staticFriction) {
+        this.staticFriction = staticFriction;
+    }
+
+    public double getDynamicFriction() {
+        return dynamicFriction;
+    }
+
+    public void setDynamicFriction(double dynamicFriction) {
+        this.dynamicFriction = dynamicFriction;
     }
 
     public Shape2d getShape() {
