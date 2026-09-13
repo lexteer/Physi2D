@@ -11,6 +11,7 @@ public class Body {
     private double staticFriction = 0.5;
     private double dynamicFriction = 0.3;
     private double linearDamping = 0.01;
+    private double dragCoefficient = 0.1;
     private Vec2 velocity = Vec2.ZERO;
     private Vec2 force = Vec2.ZERO;
     private Shape2d shape;
@@ -79,6 +80,14 @@ public class Body {
 
     public void setLinearDamping(double linearDamping) {
         this.linearDamping = Math.clamp(linearDamping, 0.0, 0.9999);;
+    }
+
+    public double getDragCoefficient() {
+        return dragCoefficient;
+    }
+
+    public void setDragCoefficient(double dragCoefficient) {
+        this.dragCoefficient = dragCoefficient;
     }
 
     public Shape2d getShape() {

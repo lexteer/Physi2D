@@ -13,6 +13,8 @@ public class World {
     private Vec2 gravity = new Vec2(0, -9.81);
     private List<Body> bodies;
 
+    private double fluidDensity = 0.0;
+
     public World() {
         bodies = new ArrayList<>();
     }
@@ -27,6 +29,13 @@ public class World {
                 double mass = 1 / iMass;
                 Vec2 gravityForce = gravity.mult(mass);
                 body.applyForce(gravityForce.mult(gravityScale));
+            }
+
+            // fluid drag
+            if (iMass != 0 && fluidDensity != 0) {
+                Vec2 velocity = body.getVelocity();
+                double dragCoefficient = body.getDragCoefficient();
+                body.applyForce(velocity.mult(-fluidDensity * dragCoefficient));
             }
 
             integrate(body, dt);
@@ -77,5 +86,13 @@ public class World {
 
     public List<Body> getBodies() {
         return bodies;
+    }
+
+    public double getFluidDensity() {
+        return fluidDensity;
+    }
+
+    public void setFluidDensity(double fluidDensity) {
+        this.fluidDensity = fluidDensity;
     }
 }
