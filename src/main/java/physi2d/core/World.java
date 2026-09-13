@@ -16,21 +16,16 @@ public class World {
     public void step(double dt) {
         for (Body body : bodies) {
             double iMass = body.getInvMass();
-            if (iMass == 0) {
-                body.clearForce();
-                continue;
-            }
 
             // apply gravity
             double gravityScale = body.getGravityScale();
-            if (!gravity.equals(Vec2.ZERO) && gravityScale != 0.0) {
+            if (iMass != 0 && !gravity.equals(Vec2.ZERO) && gravityScale != 0.0) {
                 double mass = 1 / iMass;
                 Vec2 gravityForce = gravity.mult(mass);
                 body.applyForce(gravityForce.mult(gravityScale));
             }
 
             integrate(body, dt);
-
             body.clearForce();
         }
     }
