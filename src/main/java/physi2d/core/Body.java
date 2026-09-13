@@ -42,6 +42,10 @@ public class Body {
         return invMass;
     }
 
+    public void setMass(double mass) {
+        this.invMass = (mass == 0) ? 0 : 1/mass;
+    }
+
     public double getGravityScale() {
         return gravityScale;
     }
@@ -92,6 +96,10 @@ public class Body {
 
     public Shape2d getShape() {
         return shape;
+    }
+
+    public void setShape(Shape2d shape) {
+        this.shape = shape;
     }
 
     public Vec2 getForce() {
