@@ -39,7 +39,7 @@ public class World {
             }
 
             integrate(body, dt);
-            body.clearForce();
+            body.clearForces();
         }
         checkCollisionsAndResolve();
     }
@@ -54,6 +54,19 @@ public class World {
 
         Vec2 posChange = body.getVelocity().mult(dt);
         body.setPosition(body.getPosition().add(posChange));
+
+        // rotation
+        double iInertia = body.getInvInertia();
+        if (iInertia == 0) {
+            body.setAngularVelocity(0);
+            return;
+        }
+
+        double angularAcceleration = body.getTorque() * iInertia;
+        body.setAngularVelocity(body.getAngularVelocity() + angularAcceleration * dt);
+        body.setAngularVelocity(body.getAngularVelocity() * (Math.pow(1.0 - body.getAngularDamping(), dt)));
+
+        body.setAngle(body.getAngle() + body.getAngularVelocity() * dt);
     }
 
     private void checkCollisionsAndResolve() {

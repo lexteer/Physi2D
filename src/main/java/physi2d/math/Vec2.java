@@ -28,6 +28,10 @@ public record Vec2(double x, double y) {
         return this.x * other.x + this.y * other.y;
     }
 
+    public double cross(Vec2 other) {
+        return this.x * other.y - this.y * other.x;
+    }
+
     public double lengthSquared() {
         return this.x * this.x + this.y * this.y;
     }
