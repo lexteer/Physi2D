@@ -22,10 +22,11 @@ public class World {
             }
 
             // apply gravity
-            if (!gravity.equals(Vec2.ZERO)) {
+            double gravityScale = body.getGravityScale();
+            if (!gravity.equals(Vec2.ZERO) && gravityScale != 0.0) {
                 double mass = 1 / iMass;
                 Vec2 gravityForce = gravity.mult(mass);
-                body.applyForce(gravityForce);
+                body.applyForce(gravityForce.mult(gravityScale));
             }
 
             integrate(body, dt);

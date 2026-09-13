@@ -6,6 +6,8 @@ import physi2d.shapes.Shape2d;
 public class Body {
     private Vec2 position;
     private double invMass;
+    private double gravityScale = 1.0;
+    private double restitution = 0.2; // 0.0 - 1.0
     private Vec2 velocity = Vec2.ZERO;
     private Vec2 force = Vec2.ZERO;
     private Shape2d shape;
@@ -34,6 +36,22 @@ public class Body {
 
     public double getInvMass() {
         return invMass;
+    }
+
+    public double getGravityScale() {
+        return gravityScale;
+    }
+
+    public void setGravityScale(double gravityScale) {
+        this.gravityScale = gravityScale;
+    }
+
+    public double getRestitution() {
+        return restitution;
+    }
+
+    public void setRestitution(double restitution) {
+        this.restitution = Math.clamp(restitution, 0.0, 1.0);
     }
 
     public Shape2d getShape() {
