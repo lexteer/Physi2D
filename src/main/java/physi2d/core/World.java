@@ -1,9 +1,13 @@
 package physi2d.core;
 
+import physi2d.collision.CollisionDetection;
+import physi2d.collision.CollisionManifold;
+import physi2d.collision.CollisionResolution;
 import physi2d.math.Vec2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class World {
     private Vec2 gravity = new Vec2(0, -9.81);
@@ -28,6 +32,7 @@ public class World {
             integrate(body, dt);
             body.clearForce();
         }
+        checkCollisionsAndResolve();
     }
 
     private void integrate(Body body, double dt) {
@@ -39,6 +44,18 @@ public class World {
 
         Vec2 posChange = body.getVelocity().mult(dt);
         body.setPosition(body.getPosition().add(posChange));
+    }
+
+    private void checkCollisionsAndResolve() {
+        for (int i = 0; i < bodies.size(); i++) {
+            Body a = bodies.get(i);
+            for (int j = i + 1; j < bodies.size(); j++) {
+                Body b = bodies.get(j);
+
+                Optional<CollisionManifold> manifold = CollisionDetection.circleCircle(a, b);
+                manifold.ifPresent(CollisionResolution::resolve);
+            }
+        }
     }
 
     public Vec2 getGravity() {
