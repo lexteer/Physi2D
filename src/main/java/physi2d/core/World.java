@@ -41,6 +41,7 @@ public class World {
 
         Vec2 velocityChange = acceleration.mult(dt);
         body.setVelocity(body.getVelocity().add(velocityChange));
+        body.setVelocity(body.getVelocity().mult(Math.pow(1.0 - body.getLinearDamping(), dt)));
 
         Vec2 posChange = body.getVelocity().mult(dt);
         body.setPosition(body.getPosition().add(posChange));

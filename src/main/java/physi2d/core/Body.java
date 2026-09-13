@@ -10,6 +10,7 @@ public class Body {
     private double restitution = 0.2; // 0.0 - 1.0
     private double staticFriction = 0.5;
     private double dynamicFriction = 0.3;
+    private double linearDamping = 0.01;
     private Vec2 velocity = Vec2.ZERO;
     private Vec2 force = Vec2.ZERO;
     private Shape2d shape;
@@ -70,6 +71,14 @@ public class Body {
 
     public void setDynamicFriction(double dynamicFriction) {
         this.dynamicFriction = dynamicFriction;
+    }
+
+    public double getLinearDamping() {
+        return linearDamping;
+    }
+
+    public void setLinearDamping(double linearDamping) {
+        this.linearDamping = Math.clamp(linearDamping, 0.0, 0.9999);;
     }
 
     public Shape2d getShape() {
