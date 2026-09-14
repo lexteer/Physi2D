@@ -45,4 +45,17 @@ public record Vec2(double x, double y) {
         if (len < MathUtils.EPSILON) throw new ArithmeticException("Cannot normalize a vector with a length of 0");
         return new Vec2(this.x / len, this.y / len);
     }
+
+    public Vec2 rotate(double angle) {
+        double cosAngle = Math.cos(angle);
+        double sinAngle = Math.sin(angle);
+
+        return rotate(cosAngle, sinAngle);
+    }
+
+    public Vec2 rotate(double cosAngle, double sinAngle) {
+        double rotatedX = this.x * cosAngle - this.y * sinAngle;
+        double rotatedY = this.x * sinAngle + this.y * cosAngle;
+        return new Vec2(rotatedX, rotatedY);
+    }
 }

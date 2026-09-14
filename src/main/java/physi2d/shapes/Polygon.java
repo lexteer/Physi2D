@@ -13,7 +13,7 @@ public class Polygon implements Shape2d {
 
     public Polygon(List<Vec2> vertices) {
         this.vertices = new ArrayList<>(vertices);
-        computeCentroid();
+        centerPolygonOnCentroid(computeCentroid());
     }
 
     public List<Vec2> getVertices() {
@@ -26,17 +26,21 @@ public class Polygon implements Shape2d {
         double sinAngle = Math.sin(angle);
 
         for (Vec2 vertex : vertices) {
-            double rotatedX = vertex.x() * cosAngle - vertex.y() * sinAngle;
-            double rotatedY = vertex.x() * sinAngle + vertex.y() * cosAngle;
-            Vec2 rotatedVertex = new Vec2(rotatedX, rotatedY);
-
-            worldVertices.add(rotatedVertex.add(position));
+            worldVertices.add(vertex.rotate(cosAngle, sinAngle).add(position));
         }
 
         return worldVertices;
     }
 
-    private void computeCentroid() {
+    private void centerPolygonOnCentroid(Vec2 centroid) {
+        List<Vec2> newVertices = new ArrayList<>();
+        for (Vec2 vertex : vertices) {
+            newVertices.add(vertex.sub(centroid));
+        }
+        vertices = Collections.unmodifiableList(newVertices);
+    }
+
+    private Vec2 computeCentroid() {
         int n = vertices.size();
         double areaSum = 0;
         double centroidXSum = 0;
@@ -70,13 +74,8 @@ public class Polygon implements Shape2d {
 
         double centroidX = centroidXSum / (6.0 * signedArea);
         double centroidY = centroidYSum / (6.0 * signedArea);
-        Vec2 centroid = new Vec2(centroidX, centroidY);
 
-        List<Vec2> newVertices = new ArrayList<>();
-        for (Vec2 vertex : vertices) {
-            newVertices.add(vertex.sub(centroid));
-        }
-        vertices = newVertices;
+        return new Vec2(centroidX, centroidY);
     }
 
     @Override

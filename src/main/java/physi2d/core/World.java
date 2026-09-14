@@ -4,6 +4,7 @@ import physi2d.collision.CollisionDetection;
 import physi2d.collision.CollisionManifold;
 import physi2d.collision.CollisionResolution;
 import physi2d.math.Vec2;
+import physi2d.shapes.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,8 @@ public class World {
             Body a = bodies.get(i);
             for (int j = i + 1; j < bodies.size(); j++) {
                 Body b = bodies.get(j);
+
+                if (!(a.getShape() instanceof Circle) || !(b.getShape() instanceof Circle)) return;
 
                 Optional<CollisionManifold> manifold = CollisionDetection.circleCircle(a, b);
                 manifold.ifPresent(CollisionResolution::resolve);
