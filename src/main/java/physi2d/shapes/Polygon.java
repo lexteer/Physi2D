@@ -32,6 +32,14 @@ public class Polygon implements Shape2d {
         return worldVertices;
     }
 
+    public static Vec2 getFaceNormal(List<Vec2> worldVertices, int index) {
+        Vec2 current = worldVertices.get(index);
+        Vec2 next = worldVertices.get((index + 1) % worldVertices.size());
+        Vec2 edge = next.sub(current); //todo fix: if edge is 0 normalize will throw
+
+        return edge.perpendicular().normalize();
+    }
+
     private void centerPolygonOnCentroid(Vec2 centroid) {
         List<Vec2> newVertices = new ArrayList<>();
         for (Vec2 vertex : vertices) {

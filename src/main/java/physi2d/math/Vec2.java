@@ -58,4 +58,8 @@ public record Vec2(double x, double y) {
         double rotatedY = this.x * sinAngle + this.y * cosAngle;
         return new Vec2(rotatedX, rotatedY);
     }
+
+    public Vec2 perpendicular() {
+        return new Vec2(this.y, -this.x);
+    }
 }
