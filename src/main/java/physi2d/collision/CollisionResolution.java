@@ -16,27 +16,30 @@ public class CollisionResolution {
         double iMassSum = iMassA + iMassB;
         if (iMassSum == 0) return;
 
-        Vec2 contact = manifold.contactPoints().getFirst();
-        Vec2 rA = contact.sub(bodyA.getPosition());
-        Vec2 rB = contact.sub(bodyB.getPosition());
+        for (Vec2 contact : manifold.contactPoints()) {
+            Vec2 rA = contact.sub(bodyA.getPosition());
+            Vec2 rB = contact.sub(bodyB.getPosition());
 
-        Vec2 relVel = bodyB.velocityAtPoint(rB).sub(bodyA.velocityAtPoint(rA));
-        Vec2 normal = manifold.normal();
-        double relVelDotNor = relVel.dot(normal);
-        if (relVelDotNor > 0.0) return;
+            Vec2 relVel = bodyB.velocityAtPoint(rB).sub(bodyA.velocityAtPoint(rA));
+            Vec2 normal = manifold.normal();
+            double relVelDotNor = relVel.dot(normal);
+            if (relVelDotNor > 0.0) continue;
 
-        double e = Math.min(bodyA.getRestitution(), bodyB.getRestitution());
+            double e = Math.min(bodyA.getRestitution(), bodyB.getRestitution());
 
-        double rAcrossNor = rA.cross(normal);
-        double rBcrossNor = rB.cross(normal);
-        double denominator = iMassSum + rAcrossNor * rAcrossNor * bodyA.getInvInertia() +
-                                        rBcrossNor * rBcrossNor * bodyB.getInvInertia();
-        double j = (-(1.0 + e) * relVelDotNor) / denominator;
+            double rAcrossNor = rA.cross(normal);
+            double rBcrossNor = rB.cross(normal);
+            double denominator = iMassSum + rAcrossNor * rAcrossNor * bodyA.getInvInertia() +
+                    rBcrossNor * rBcrossNor * bodyB.getInvInertia();
+            double j = (-(1.0 + e) * relVelDotNor) / denominator;
+            j /= manifold.contactPoints().size();
 
-        Vec2 impulse = normal.mult(j);
-        applyImpulseToVelocity(bodyA, bodyB, rA, rB, impulse);
+            Vec2 impulse = normal.mult(j);
+            applyImpulseToVelocity(bodyA, bodyB, rA, rB, impulse);
 
-        applyContactFriction(manifold, relVel, j, rA, rB);
+            applyContactFriction(manifold, relVel, j, rA, rB);
+        }
+
         positionalCorrection(manifold);
     }
 
