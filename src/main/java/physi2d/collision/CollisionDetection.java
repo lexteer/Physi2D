@@ -94,10 +94,15 @@ public class CollisionDetection {
 
         for (int i = 0; i < verticesA.size(); i++) {
             Vec2 faceNormal = Polygon.getFaceNormal(verticesA, i);
-            Projection projectionA = Projection.project(verticesA, faceNormal);
-            Projection projectionB = Projection.project(verticesB, faceNormal);
+            Vec2 faceVertex = verticesA.get(i);
+            double deepest = Double.POSITIVE_INFINITY;
 
-            double overlap = projectionA.overlapAmount(projectionB);
+            for (Vec2 vertex : verticesB) {
+                double distance = vertex.sub(faceVertex).dot(faceNormal);
+                deepest = Math.min(deepest, distance);
+            }
+
+            double overlap = -deepest;
             if (overlap <= 0) return Optional.empty();
 
             if (overlap < smallestOverlap) {

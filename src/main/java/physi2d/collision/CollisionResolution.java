@@ -102,7 +102,7 @@ public class CollisionResolution {
         bodyB.setVelocity(bVelocity);
 
         // rotation
-        double angularVelA = bodyA.getAngularVelocity() + rA.cross(impulse) * bodyA.getInvInertia();
+        double angularVelA = bodyA.getAngularVelocity() - rA.cross(impulse) * bodyA.getInvInertia();
         double angularVelB = bodyB.getAngularVelocity() + rB.cross(impulse) * bodyB.getInvInertia();
 
         bodyA.setAngularVelocity(angularVelA);

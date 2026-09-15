@@ -42,7 +42,8 @@ public class World {
             integrate(body, dt);
             body.clearForces();
         }
-        checkCollisionsAndResolve();
+
+        for (int i = 0; i < 10; i++) checkCollisionsAndResolve();
     }
 
     private void integrate(Body body, double dt) {
@@ -76,9 +77,16 @@ public class World {
             for (int j = i + 1; j < bodies.size(); j++) {
                 Body b = bodies.get(j);
 
-                if (!(a.getShape() instanceof Circle) || !(b.getShape() instanceof Circle)) return;
+                Shape2d shapeA = a.getShape();
+                Shape2d shapeB = b.getShape();
+                Optional<CollisionManifold> manifold = Optional.empty();
 
-                Optional<CollisionManifold> manifold = CollisionDetection.circleCircle(a, b);
+                if (shapeA instanceof Circle && shapeB instanceof Circle) {
+                    manifold = CollisionDetection.circleCircle(a, b);
+                } else if (shapeA instanceof Polygon && shapeB instanceof Polygon) {
+                    manifold = CollisionDetection.polyPoly(a, b);
+                }
+
                 manifold.ifPresent(CollisionResolution::resolve);
             }
         }
