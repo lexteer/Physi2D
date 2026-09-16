@@ -1,9 +1,9 @@
 package physi2d.shapes;
 
-public class Circle implements Shape2d {
+public class CircleShape implements Shape2d {
     private double radius;
 
-    public Circle(double radius) {
+    public CircleShape(double radius) {
         this.radius = radius;
     }
 
@@ -18,5 +18,10 @@ public class Circle implements Shape2d {
     @Override
     public double computeInertia(double mass) {
         return 0.5 * mass * radius * radius;
+    }
+
+    @Override
+    public ShapeType getType() {
+        return ShapeType.CIRCLE;
     }
 }

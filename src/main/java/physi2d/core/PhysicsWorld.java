@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class World {
+public class PhysicsWorld {
     private Vec2 gravity = new Vec2(0, -9.81);
     private List<Body> bodies;
 
     private double fluidDensity = 0.0;
 
-    public World() {
+    public PhysicsWorld() {
         bodies = new ArrayList<>();
     }
 
@@ -43,7 +43,7 @@ public class World {
             body.clearForces();
         }
 
-        for (int i = 0; i < 10; i++) checkCollisionsAndResolve();
+        for (int i = 0; i < 5; i++) checkCollisionsAndResolve();
     }
 
     private void integrate(Body body, double dt) {
@@ -77,14 +77,18 @@ public class World {
             for (int j = i + 1; j < bodies.size(); j++) {
                 Body b = bodies.get(j);
 
-                Shape2d shapeA = a.getShape();
-                Shape2d shapeB = b.getShape();
+                ShapeType shapeA = a.getShape().getType();
+                ShapeType shapeB = b.getShape().getType();;
                 Optional<CollisionManifold> manifold = Optional.empty();
 
-                if (shapeA instanceof Circle && shapeB instanceof Circle) {
+                if (shapeA == ShapeType.CIRCLE && shapeB == ShapeType.CIRCLE) {
                     manifold = CollisionDetection.circleCircle(a, b);
-                } else if (shapeA instanceof Polygon && shapeB instanceof Polygon) {
+                } else if (shapeA == ShapeType.POLYGON && shapeB == ShapeType.POLYGON) {
                     manifold = CollisionDetection.polyPoly(a, b);
+                } else if (shapeA == ShapeType.CIRCLE && shapeB == ShapeType.POLYGON) {
+                    manifold = CollisionDetection.circlePoly(a, b);
+                } else if (shapeA == ShapeType.POLYGON && shapeB == ShapeType.CIRCLE) {
+                    manifold = CollisionDetection.circlePoly(b, a);
                 }
 
                 manifold.ifPresent(CollisionResolution::resolve);

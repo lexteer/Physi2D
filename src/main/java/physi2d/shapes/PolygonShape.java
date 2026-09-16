@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Polygon implements Shape2d {
+public class PolygonShape implements Shape2d {
     private List<Vec2> vertices;
     private double area;
 
-    public Polygon(List<Vec2> vertices) {
+    public PolygonShape(List<Vec2> vertices) {
         this.vertices = new ArrayList<>(vertices);
         centerPolygonOnCentroid(computeCentroid());
     }
@@ -105,5 +105,10 @@ public class Polygon implements Shape2d {
         }
 
         return (mass * inertiaSum) / (12.0 * area);
+    }
+
+    @Override
+    public ShapeType getType() {
+        return ShapeType.POLYGON;
     }
 }
