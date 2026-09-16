@@ -2,10 +2,9 @@ package physi2d.collision;
 
 import physi2d.core.Body;
 import physi2d.math.MathUtils;
-import physi2d.math.Projection;
 import physi2d.math.Vec2;
-import physi2d.shapes.Circle;
-import physi2d.shapes.Polygon;
+import physi2d.shapes.CircleShape;
+import physi2d.shapes.PolygonShape;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +14,8 @@ public class CollisionDetection {
     private record SatResult(Vec2 axis, double overlap, int faceIndex) {}
 
     public static Optional<CollisionManifold> circleCircle(Body bodyA, Body bodyB) {
-        Circle circleA = (Circle) bodyA.getShape();
-        Circle circleB = (Circle) bodyB.getShape();
+        CircleShape circleA = (CircleShape) bodyA.getShape();
+        CircleShape circleB = (CircleShape) bodyB.getShape();
         double radiiSum = circleA.getRadius() + circleB.getRadius();
 
         Vec2 vecFromAtoB = bodyB.getPosition().sub(bodyA.getPosition());
@@ -36,9 +35,45 @@ public class CollisionDetection {
         return Optional.of(new CollisionManifold(bodyA, bodyB, normal, depth, List.of(contactPoint)));
     }
 
+    public static Optional<CollisionManifold> circlePoly(Body circleBody, Body polyBody) {
+        PolygonShape poly = (PolygonShape) polyBody.getShape();
+        List<Vec2> wVertices = poly.getWorldVertices(polyBody.getAngle(), polyBody.getPosition());
+
+        Optional<SatResult> faceTestOpt = doSATonCircle(wVertices, circleBody);
+        if (faceTestOpt.isEmpty()) return Optional.empty();
+        SatResult faceTest = faceTestOpt.get();
+
+        Vec2 closestCornerAxis = getClosestCornerAxisToCircle(wVertices, circleBody);
+
+        double cornerOverlap = circleToPolyOverlap(wVertices, circleBody, closestCornerAxis);
+        if (cornerOverlap <= 0) return Optional.empty();
+
+        double depth;
+        Vec2 normal;
+
+        if (cornerOverlap < faceTest.overlap()) {
+            depth = cornerOverlap;
+            normal = closestCornerAxis;
+        } else {
+            depth = faceTest.overlap();
+            normal = faceTest.axis();
+        }
+
+        normal = normal.negate();
+
+        // contact point
+        CircleShape circle = (CircleShape) circleBody.getShape();
+        Vec2 circleCenter = circleBody.getPosition();
+        double radius = circle.getRadius();
+
+        Vec2 contactPoint = normal.mult(radius).add(circleCenter);
+
+        return Optional.of(new CollisionManifold(circleBody, polyBody, normal, depth, List.of(contactPoint)));
+    }
+
     public static Optional<CollisionManifold> polyPoly(Body bodyA, Body bodyB) {
-        Polygon polyA = (Polygon) bodyA.getShape();
-        Polygon polyB = (Polygon) bodyB.getShape();
+        PolygonShape polyA = (PolygonShape) bodyA.getShape();
+        PolygonShape polyB = (PolygonShape) bodyB.getShape();
 
         List<Vec2> wVerticesA = polyA.getWorldVertices(bodyA.getAngle(), bodyA.getPosition());
         List<Vec2> wVerticesB = polyB.getWorldVertices(bodyB.getAngle(), bodyB.getPosition());
@@ -87,13 +122,79 @@ public class CollisionDetection {
         return Optional.of(new CollisionManifold(bodyA, bodyB, normal, result.overlap(), contactPoints));
     }
 
+    private static double circleToPolyOverlap(List<Vec2> wVertices, Body circleBody, Vec2 closestCornerAxis) {
+        CircleShape circle = (CircleShape) circleBody.getShape();
+        Vec2 circleCenter = circleBody.getPosition();
+        double radius = circle.getRadius();
+
+        double largestDistance = Double.NEGATIVE_INFINITY;
+        for (Vec2 vertex : wVertices) {
+            double reachDistance = vertex.dot(closestCornerAxis);
+
+            if (reachDistance > largestDistance) largestDistance = reachDistance;
+        }
+
+        double circleNearSide = circleCenter.dot(closestCornerAxis) - radius;
+
+        return largestDistance - circleNearSide;
+    }
+
+
+    private static Vec2 getClosestCornerAxisToCircle(List<Vec2> polygonVertices, Body circleBody) {
+        Vec2 circleCenter = circleBody.getPosition();
+        double smallestSquaredDistance = Double.POSITIVE_INFINITY;
+        Vec2 closestVertex = polygonVertices.getFirst();
+
+        for (Vec2 vertex : polygonVertices) {
+            Vec2 offset = circleCenter.sub(vertex);
+            double distanceSquared = offset.lengthSquared();
+
+            if (distanceSquared < smallestSquaredDistance) {
+                smallestSquaredDistance = distanceSquared;
+                closestVertex = vertex;
+            }
+        }
+
+        if (smallestSquaredDistance < MathUtils.EPSILON) {
+            return new Vec2(1, 0);
+        }
+
+        return circleCenter.sub(closestVertex).normalize();
+    }
+
+    private static Optional<SatResult> doSATonCircle(List<Vec2> polygonVertices, Body circleBody) {
+        double radius = ((CircleShape) circleBody.getShape()).getRadius();
+        Vec2 circleCenter = circleBody.getPosition();
+        double smallestOverlap = Double.POSITIVE_INFINITY;
+        Vec2 axis = Vec2.ZERO;
+        int index = 0;
+
+        for (int i = 0; i < polygonVertices.size(); i++) {
+            Vec2 vertex = polygonVertices.get(i);
+            Vec2 faceNormal = PolygonShape.getFaceNormal(polygonVertices, i);
+            Vec2 offset = circleCenter.sub(vertex);
+            double distance = offset.dot(faceNormal) - radius;
+
+            double overlap = -distance;
+            if (overlap <= 0) return Optional.empty();
+
+            if (overlap < smallestOverlap) {
+                smallestOverlap = overlap;
+                axis = faceNormal;
+                index = i;
+            }
+        }
+
+        return Optional.of(new SatResult(axis, smallestOverlap, index));
+    }
+
     private static Optional<SatResult> doSATonPolygons(List<Vec2> verticesA, List<Vec2> verticesB) {
         double smallestOverlap = Double.POSITIVE_INFINITY;
         Vec2 axis = Vec2.ZERO;
         int index = 0;
 
         for (int i = 0; i < verticesA.size(); i++) {
-            Vec2 faceNormal = Polygon.getFaceNormal(verticesA, i);
+            Vec2 faceNormal = PolygonShape.getFaceNormal(verticesA, i);
             Vec2 faceVertex = verticesA.get(i);
             double deepest = Double.POSITIVE_INFINITY;
 
@@ -120,7 +221,7 @@ public class CollisionDetection {
         int index = 0;
 
         for (int i = 0; i < incidentPoly.size(); i++) {
-            Vec2 edgeNormal = Polygon.getFaceNormal(incidentPoly, i);
+            Vec2 edgeNormal = PolygonShape.getFaceNormal(incidentPoly, i);
             double facing = edgeNormal.dot(referenceAxis);
 
             if (facing < smallestEdge) {
