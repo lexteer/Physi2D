@@ -13,8 +13,8 @@ public class Body {
     private double restitution = 0.2; // 0.0 - 1.0
     private double staticFriction = 0.5;
     private double dynamicFriction = 0.3;
-    private double linearDamping = 0.01;
-    private double angularDamping = 0.01;
+    private double linearDamping = 0.02;
+    private double angularDamping = 0.02;
     private double dragCoefficient = 0.1;
     private Vec2 velocity = Vec2.ZERO;
     private double angularVelocity; // rad/s
@@ -22,6 +22,7 @@ public class Body {
     private Shape2d shape;
     private boolean autoInertia;
     private double torque;
+    private double rollingResistance = 0.02;
 
     // 0 mass - wont move
     // 0 inertia - wont rotate
@@ -197,5 +198,13 @@ public class Body {
 
     public Vec2 velocityAtPoint(Vec2 offset) {
         return velocity.add(new Vec2(-angularVelocity * offset.y(), angularVelocity * offset.x()));
+    }
+
+    public double getRollingResistance() {
+        return rollingResistance;
+    }
+
+    public void setRollingResistance(double rollingResistance) {
+        this.rollingResistance = rollingResistance;
     }
 }

@@ -3,10 +3,12 @@ package physi2d.collision;
 import physi2d.core.Body;
 import physi2d.math.MathUtils;
 import physi2d.math.Vec2;
+import physi2d.shapes.CircleShape;
+import physi2d.shapes.ShapeType;
 
 public class CollisionResolution {
     private static final double SLOP = 0.005;
-    private static final double CORRECTION_PERCENTAGE = 0.2;
+    private static final double CORRECTION_PERCENTAGE = 0.3;
 
     public static void resolve(CollisionManifold manifold) {
         Body bodyA = manifold.bodyA();
@@ -38,6 +40,7 @@ public class CollisionResolution {
             applyImpulseToVelocity(bodyA, bodyB, rA, rB, impulse);
 
             applyContactFriction(manifold, relVel, j, rA, rB);
+            applyRollingResistance(bodyA, bodyB, j);
         }
 
         positionalCorrection(manifold);
@@ -107,5 +110,39 @@ public class CollisionResolution {
 
         bodyA.setAngularVelocity(angularVelA);
         bodyB.setAngularVelocity(angularVelB);
+    }
+
+    private static void applyRollingResistance(Body bodyA, Body bodyB, double j) {
+        ShapeType shapeA = bodyA.getShape().getType();
+        ShapeType shapeB = bodyB.getShape().getType();
+        if (shapeA != ShapeType.CIRCLE && shapeB != ShapeType.CIRCLE) return;
+
+        Body[] bodies = {
+                bodyA, bodyB
+        };
+
+        for (int i = 0; i < bodies.length; i++) {
+            Body body = bodies[i];
+            Body otherBody = (i == 0) ? bodies[1] : bodies[0];
+
+            ShapeType shape = body.getShape().getType();
+            if (shape != ShapeType.CIRCLE) continue;
+
+            CircleShape circle = (CircleShape) body.getShape();
+            double resistance = Math.sqrt(body.getRollingResistance() * otherBody.getRollingResistance());
+
+            double brake = resistance * j * circle.getRadius();
+            brake *= body.getInvInertia();
+
+            double angularVelocity = body.getAngularVelocity();
+
+            if (Math.abs(angularVelocity) <= brake) {
+                body.setAngularVelocity(0);
+            } else {
+                if (angularVelocity > 0) body.setAngularVelocity(angularVelocity - brake);
+                if (angularVelocity < 0) body.setAngularVelocity(angularVelocity + brake);
+            }
+        }
+
     }
 }
